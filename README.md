@@ -1,16 +1,18 @@
-# Star Dash
+# Sweet Star Shooter
 
-ブラウザだけで遊べる、シンプルなJavaScriptゲームです。
+A cute JavaScript shooting game where you guide a magical girl and stop incoming star monsters with heart bullets.
 
-## 遊び方
+## How to Play
 
-1. `index.html` をブラウザで開きます。
-2. `Start` を押します。
-3. 矢印キーまたは WASD で青いプレイヤーを動かします。
-4. 30秒以内に星をたくさん集めます。
+1. Open `index.html` in a browser.
+2. Press `Start`.
+3. Move with Arrow keys or WASD.
+4. Shoot heart bullets with Space.
+5. Stop the star monsters before they pass the left edge.
 
-## ファイル構成
+## Files
 
-- `index.html`: ゲーム画面
-- `style.css`: 見た目の調整
-- `script.js`: ゲームの処理
+- `index.html`: Game screen
+- `style.css`: Visual styling
+- `script.js`: Game logic
+- `assets/`: Image assets used by the game
