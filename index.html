@@ -3,24 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Star Dash</title>
+  <title>Sweet Star Shooter</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="game-shell">
-    <section class="hud" aria-label="ゲーム情報">
-      <h1>Star Dash</h1>
+    <section class="hud" aria-label="Game information">
+      <div>
+        <h1>Sweet Star Shooter</h1>
+        <p class="subtitle">Guide the magical girl and stop the star monsters.</p>
+      </div>
       <div class="stats">
-        <span>Score: <strong id="score">0</strong></span>
-        <span>Time: <strong id="time">30</strong>s</span>
+        <span>Score <strong id="score">0</strong></span>
+        <span>Lives <strong id="lives">3</strong></span>
       </div>
     </section>
 
-    <canvas id="game" width="720" height="420" aria-label="Star Dash game canvas"></canvas>
+    <canvas id="game" width="800" height="480" aria-label="Sweet Star Shooter game canvas"></canvas>
 
-    <section class="controls" aria-label="操作">
+    <section class="controls" aria-label="Controls">
       <button id="startButton" type="button">Start</button>
-      <p>Arrow keys / WASD to move. Collect stars before time runs out.</p>
+      <p>Move: Arrow keys / WASD - Shoot: Space</p>
     </section>
   </main>
 
