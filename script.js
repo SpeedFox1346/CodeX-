@@ -1,41 +1,56 @@
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
 const scoreElement = document.querySelector("#score");
-const timeElement = document.querySelector("#time");
+const livesElement = document.querySelector("#lives");
 const startButton = document.querySelector("#startButton");
 
-const keys = new Set();
-const player = {
-  x: 60,
-  y: 60,
-  size: 28,
-  speed: 260,
+const assets = {
+  background: loadImage("assets/background.svg"),
+  player: loadImage("assets/player-girl.svg"),
+  enemy: loadImage("assets/star-enemy.svg"),
+  bullet: loadImage("assets/heart-bullet.svg"),
 };
 
-let star = createStar();
+const keys = new Set();
+const bullets = [];
+const enemies = [];
+const sparkles = [];
+
+const player = {
+  x: 90,
+  y: canvas.height / 2,
+  width: 62,
+  height: 78,
+  speed: 300,
+  cooldown: 0,
+};
+
 let score = 0;
-let timeLeft = 30;
+let lives = 3;
 let running = false;
 let lastTime = 0;
-let timerId = null;
+let spawnTimer = 0;
+let gameOver = false;
 
-function createStar() {
-  const margin = 32;
-  return {
-    x: margin + Math.random() * (canvas.width - margin * 2),
-    y: margin + Math.random() * (canvas.height - margin * 2),
-    size: 18,
-  };
+function loadImage(src) {
+  const image = new Image();
+  image.src = src;
+  return image;
 }
 
 function resetGame() {
-  player.x = 60;
-  player.y = 60;
-  star = createStar();
+  player.x = 90;
+  player.y = canvas.height / 2;
+  player.cooldown = 0;
+  bullets.length = 0;
+  enemies.length = 0;
+  sparkles.length = 0;
   score = 0;
-  timeLeft = 30;
+  lives = 3;
+  spawnTimer = 0;
+  gameOver = false;
   scoreElement.textContent = score;
-  timeElement.textContent = timeLeft;
+  livesElement.textContent = lives;
 }
 
 function startGame() {
@@ -43,25 +58,7 @@ function startGame() {
   running = true;
   startButton.textContent = "Restart";
   lastTime = performance.now();
-  clearInterval(timerId);
-  timerId = setInterval(tickTimer, 1000);
   requestAnimationFrame(update);
-}
-
-function tickTimer() {
-  if (!running) {
-    return;
-  }
-
-  timeLeft -= 1;
-  timeElement.textContent = timeLeft;
-
-  if (timeLeft <= 0) {
-    running = false;
-    clearInterval(timerId);
-    draw();
-    drawGameOver();
-  }
 }
 
 function update(now) {
@@ -69,12 +66,21 @@ function update(now) {
     return;
   }
 
-  const delta = (now - lastTime) / 1000;
+  const delta = Math.min((now - lastTime) / 1000, 0.033);
   lastTime = now;
 
   movePlayer(delta);
-  checkCollision();
+  updateBullets(delta);
+  updateEnemies(delta);
+  updateSparkles(delta);
+  spawnEnemies(delta);
+  checkCollisions();
   draw();
+
+  if (lives <= 0) {
+    endGame();
+    return;
+  }
 
   requestAnimationFrame(update);
 }
@@ -98,89 +104,203 @@ function movePlayer(delta) {
     player.x += distance;
   }
 
-  player.x = clamp(player.x, player.size / 2, canvas.width - player.size / 2);
-  player.y = clamp(player.y, player.size / 2, canvas.height - player.size / 2);
+  player.x = clamp(player.x, 20, canvas.width * 0.52);
+  player.y = clamp(player.y, 34, canvas.height - player.height + 34);
+  player.cooldown = Math.max(0, player.cooldown - delta);
+
+  if (keys.has("Space")) {
+    shoot();
+  }
 }
 
-function checkCollision() {
-  const dx = player.x - star.x;
-  const dy = player.y - star.y;
-  const distance = Math.hypot(dx, dy);
+function shoot() {
+  if (player.cooldown > 0) {
+    return;
+  }
 
-  if (distance < player.size / 2 + star.size) {
-    score += 1;
-    scoreElement.textContent = score;
-    star = createStar();
+  bullets.push({
+    x: player.x + player.width - 8,
+    y: player.y + player.height * 0.42,
+    width: 28,
+    height: 24,
+    speed: 520,
+  });
+  player.cooldown = 0.2;
+}
+
+function updateBullets(delta) {
+  for (const bullet of bullets) {
+    bullet.x += bullet.speed * delta;
+  }
+
+  removeOffscreen(bullets, (bullet) => bullet.x < canvas.width + 40);
+}
+
+function spawnEnemies(delta) {
+  spawnTimer -= delta;
+
+  if (spawnTimer > 0) {
+    return;
+  }
+
+  const size = 44 + Math.random() * 18;
+  enemies.push({
+    x: canvas.width + 30,
+    y: 38 + Math.random() * (canvas.height - 76),
+    width: size,
+    height: size,
+    speed: 120 + Math.random() * 80 + Math.min(score * 2, 120),
+    wobble: Math.random() * Math.PI * 2,
+  });
+
+  spawnTimer = Math.max(0.4, 1.1 - score * 0.015);
+}
+
+function updateEnemies(delta) {
+  for (const enemy of enemies) {
+    enemy.x -= enemy.speed * delta;
+    enemy.wobble += delta * 5;
+    enemy.y += Math.sin(enemy.wobble) * 0.7;
+
+    if (enemy.x + enemy.width < 0) {
+      enemy.remove = true;
+      lives -= 1;
+      livesElement.textContent = lives;
+    }
+  }
+
+  removeOffscreen(enemies, (enemy) => !enemy.remove);
+}
+
+function updateSparkles(delta) {
+  for (const sparkle of sparkles) {
+    sparkle.life -= delta;
+    sparkle.y -= 30 * delta;
+  }
+
+  removeOffscreen(sparkles, (sparkle) => sparkle.life > 0);
+}
+
+function checkCollisions() {
+  for (const bullet of bullets) {
+    for (const enemy of enemies) {
+      if (enemy.remove || !isHit(bullet, enemy)) {
+        continue;
+      }
+
+      bullet.remove = true;
+      enemy.remove = true;
+      score += 10;
+      scoreElement.textContent = score;
+      burst(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
+    }
+  }
+
+  for (const enemy of enemies) {
+    if (enemy.remove || !isHit(player, enemy)) {
+      continue;
+    }
+
+    enemy.remove = true;
+    lives -= 1;
+    livesElement.textContent = lives;
+    burst(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2);
+  }
+
+  removeOffscreen(bullets, (bullet) => !bullet.remove);
+  removeOffscreen(enemies, (enemy) => !enemy.remove);
+}
+
+function burst(x, y) {
+  for (let i = 0; i < 12; i += 1) {
+    sparkles.push({
+      x,
+      y,
+      radius: 2 + Math.random() * 4,
+      angle: Math.random() * Math.PI * 2,
+      distance: 24 + Math.random() * 36,
+      life: 0.42,
+    });
   }
 }
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBackground();
-  drawStar(star.x, star.y, star.size);
-  drawPlayer();
+  drawSparkles();
+
+  for (const bullet of bullets) {
+    ctx.drawImage(assets.bullet, bullet.x, bullet.y, bullet.width, bullet.height);
+  }
+
+  for (const enemy of enemies) {
+    ctx.drawImage(assets.enemy, enemy.x, enemy.y, enemy.width, enemy.height);
+  }
+
+  ctx.drawImage(assets.player, player.x, player.y, player.width, player.height);
+
+  if (gameOver) {
+    drawGameOver();
+  }
 }
 
 function drawBackground() {
-  ctx.fillStyle = "#111827";
+  if (assets.background.complete) {
+    ctx.drawImage(assets.background, 0, 0, canvas.width, canvas.height);
+    return;
+  }
+
+  ctx.fillStyle = "#eaf8ff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
-  ctx.lineWidth = 1;
+function drawSparkles() {
+  for (const sparkle of sparkles) {
+    const progress = 1 - sparkle.life / 0.42;
+    const x = sparkle.x + Math.cos(sparkle.angle) * sparkle.distance * progress;
+    const y = sparkle.y + Math.sin(sparkle.angle) * sparkle.distance * progress;
 
-  for (let x = 0; x <= canvas.width; x += 40) {
+    ctx.globalAlpha = Math.max(0, sparkle.life / 0.42);
+    ctx.fillStyle = "#ffd15c";
     ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, canvas.height);
-    ctx.stroke();
-  }
-
-  for (let y = 0; y <= canvas.height; y += 40) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(canvas.width, y);
-    ctx.stroke();
+    ctx.arc(x, y, sparkle.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
   }
 }
 
-function drawPlayer() {
-  ctx.fillStyle = "#59d2fe";
-  ctx.beginPath();
-  ctx.arc(player.x, player.y, player.size / 2, 0, Math.PI * 2);
-  ctx.fill();
-
-  ctx.fillStyle = "#f5f7fb";
-  ctx.beginPath();
-  ctx.arc(player.x + 6, player.y - 5, 4, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-function drawStar(x, y, size) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.fillStyle = "#ffc857";
-  ctx.beginPath();
-
-  for (let i = 0; i < 10; i += 1) {
-    const radius = i % 2 === 0 ? size : size / 2.4;
-    const angle = (Math.PI / 5) * i - Math.PI / 2;
-    ctx.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
-  }
-
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
+function endGame() {
+  running = false;
+  gameOver = true;
+  draw();
 }
 
 function drawGameOver() {
-  ctx.fillStyle = "rgba(16, 21, 31, 0.72)";
+  ctx.fillStyle = "rgba(255, 247, 251, 0.78)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#f5f7fb";
+  ctx.fillStyle = "#30233a";
   ctx.textAlign = "center";
-  ctx.font = "700 42px Arial";
-  ctx.fillText("Time Up!", canvas.width / 2, canvas.height / 2 - 12);
-  ctx.font = "20px Arial";
-  ctx.fillText(`Final score: ${score}`, canvas.width / 2, canvas.height / 2 + 26);
+  ctx.font = "700 44px Arial";
+  ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 16);
+  ctx.font = "22px Arial";
+  ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 28);
+}
+
+function isHit(a, b) {
+  return (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y
+  );
+}
+
+function removeOffscreen(items, keep) {
+  for (let i = items.length - 1; i >= 0; i -= 1) {
+    if (!keep(items[i])) {
+      items.splice(i, 1);
+    }
+  }
 }
 
 function clamp(value, min, max) {
@@ -188,6 +308,9 @@ function clamp(value, min, max) {
 }
 
 window.addEventListener("keydown", (event) => {
+  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"].includes(event.code)) {
+    event.preventDefault();
+  }
   keys.add(event.code);
 });
 
@@ -196,4 +319,13 @@ window.addEventListener("keyup", (event) => {
 });
 
 startButton.addEventListener("click", startGame);
-draw();
+
+Promise.all(Object.values(assets).map((image) => {
+  if (image.complete) {
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => {
+    image.addEventListener("load", resolve, { once: true });
+    image.addEventListener("error", resolve, { once: true });
+  });
+})).then(draw);
