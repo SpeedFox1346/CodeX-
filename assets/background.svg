@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" role="img" aria-label="pastel sky background">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#bdeeff"/>
+      <stop offset=".58" stop-color="#ffe5f1"/>
+      <stop offset="1" stop-color="#fff9d7"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="480" fill="url(#sky)"/>
+  <g fill="#fff" opacity=".88">
+    <ellipse cx="110" cy="92" rx="48" ry="20"/>
+    <ellipse cx="150" cy="86" rx="38" ry="18"/>
+    <ellipse cx="620" cy="128" rx="54" ry="22"/>
+    <ellipse cx="670" cy="122" rx="42" ry="18"/>
+    <ellipse cx="380" cy="72" rx="36" ry="14"/>
+    <ellipse cx="412" cy="68" rx="30" ry="13"/>
+  </g>
+  <g fill="#fff6a8" opacity=".9">
+    <path d="M108 194l8 17 18 2-13 12 4 18-17-9-16 9 3-18-13-12 18-2z"/>
+    <path d="M710 70l6 13 14 1-10 10 3 14-13-7-12 7 2-14-10-10 14-1z"/>
+    <path d="M506 284l5 11 12 1-9 8 3 12-11-6-11 6 2-12-9-8 12-1z"/>
+  </g>
+  <path fill="#b7f0d0" d="M0 392c98-45 184-34 272 0 108 41 205 31 305-7 85-33 154-32 223 4v91H0z"/>
+  <path fill="#86d6bc" d="M0 424c140-32 267-23 398 3 138 27 264 24 402-6v59H0z"/>
+</svg>
