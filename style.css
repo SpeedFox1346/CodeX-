@@ -1,8 +1,8 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   font-family: Arial, Helvetica, sans-serif;
-  background: #10151f;
-  color: #f5f7fb;
+  background: #fff7fb;
+  color: #30233a;
 }
 
 * {
@@ -15,44 +15,60 @@ body {
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at top left, rgba(255, 196, 87, 0.22), transparent 34rem),
-    linear-gradient(135deg, #10151f 0%, #182235 52%, #0f1a1c 100%);
+    radial-gradient(circle at 18% 12%, rgba(255, 212, 238, 0.9), transparent 28rem),
+    radial-gradient(circle at 88% 18%, rgba(178, 230, 255, 0.8), transparent 24rem),
+    linear-gradient(135deg, #fff7fb 0%, #f0fbff 48%, #fff8dc 100%);
 }
 
 .game-shell {
-  width: min(92vw, 820px);
+  width: min(94vw, 920px);
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .hud,
 .controls {
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: space-between;
   gap: 16px;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
   line-height: 1;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: #684d76;
 }
 
 .stats {
   display: flex;
-  gap: 16px;
-  font-size: 1.1rem;
+  gap: 14px;
+  color: #5b4268;
+  font-size: 1.05rem;
+}
+
+.stats span {
+  min-width: 86px;
+  padding: 8px 12px;
+  border: 1px solid rgba(112, 78, 126, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.64);
+  text-align: center;
 }
 
 canvas {
   width: 100%;
-  aspect-ratio: 12 / 7;
+  aspect-ratio: 5 / 3;
   display: block;
-  border: 2px solid rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(91, 66, 104, 0.18);
   border-radius: 8px;
-  background: #111827;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
+  background: #eaf8ff;
+  box-shadow: 0 24px 60px rgba(86, 59, 92, 0.2);
 }
 
 button {
@@ -60,31 +76,40 @@ button {
   border: 0;
   border-radius: 8px;
   padding: 12px 18px;
-  background: #ffc857;
-  color: #17202f;
+  background: #ff80b5;
+  color: #ffffff;
   font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 8px 16px rgba(255, 128, 181, 0.28);
 }
 
 button:hover,
 button:focus-visible {
-  background: #ffe39a;
+  background: #ff5aa1;
 }
 
-p {
+.controls p {
   margin: 0;
-  color: #c9d3e4;
+  color: #684d76;
   text-align: right;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 680px) {
   .hud,
   .controls {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  p {
+  .stats {
+    width: 100%;
+  }
+
+  .stats span {
+    flex: 1;
+  }
+
+  .controls p {
     text-align: left;
   }
 }
