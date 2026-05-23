@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mini RPG Maker Sample</title>
+  <link rel="stylesheet" href="maker.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <h1>Mini RPG Maker Sample</h1>
+        <p>Build a tiny dungeon, place events, and preview it in a first-person view.</p>
+      </div>
+      <div class="actions">
+        <button id="loadSampleButton" type="button">Load Sample</button>
+        <button id="exportButton" type="button">Export JSON</button>
+        <button id="importButton" type="button">Import JSON</button>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <aside class="panel">
+        <h2>Tools</h2>
+        <div class="tool-grid" id="toolGrid" aria-label="Map tools"></div>
+
+        <h2>Event Text</h2>
+        <label class="field">
+          <span>NPC message</span>
+          <input id="eventText" type="text" value="Welcome to the sample dungeon.">
+        </label>
+
+        <h2>Player</h2>
+        <p class="hint">In preview: Arrow keys move and turn. Enter talks to the NPC in front.</p>
+      </aside>
+
+      <section class="editor-area">
+        <div class="section-head">
+          <h2>Map Editor</h2>
+          <p>Click tiles to paint. Use the Start and NPC tools to place objects.</p>
+        </div>
+        <canvas id="mapCanvas" width="512" height="512" aria-label="Tile map editor"></canvas>
+      </section>
+
+      <section class="preview-area">
+        <div class="section-head">
+          <h2>3D Dungeon Preview</h2>
+          <p>Grid-based first-person view, similar to classic dungeon crawlers.</p>
+        </div>
+        <canvas id="viewCanvas" width="512" height="320" aria-label="First person dungeon preview"></canvas>
+        <div class="message" id="message">Press Start Preview, then explore.</div>
+        <button id="playButton" type="button">Start Preview</button>
+      </section>
+    </section>
+
+    <section class="data-panel">
+      <h2>Project JSON</h2>
+      <textarea id="projectData" spellcheck="false"></textarea>
+    </section>
+  </main>
+
+  <script src="maker.js"></script>
+</body>
+</html>
