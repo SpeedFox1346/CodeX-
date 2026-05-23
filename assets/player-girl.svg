@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="200" viewBox="0 0 160 200" role="img" aria-label="cute magical girl player">
+  <defs>
+    <linearGradient id="hair" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#7c5cff"/>
+      <stop offset="1" stop-color="#ff8bc8"/>
+    </linearGradient>
+    <linearGradient id="dress" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ff9fcc"/>
+      <stop offset="1" stop-color="#ff5aa1"/>
+    </linearGradient>
+  </defs>
+  <path fill="#ffd15c" d="M119 78l17-12-4 20 16 13-21 2-8 19-9-19-21-1 16-13-4-20z"/>
+  <path fill="url(#hair)" d="M39 68c0-29 19-49 43-49s42 20 42 49c0 19-9 34-18 45H57C48 101 39 87 39 68z"/>
+  <circle cx="82" cy="66" r="35" fill="#ffd7c2"/>
+  <path fill="url(#hair)" d="M44 58c11-25 48-34 73-11-12-3-24-1-35 6-15 9-28 10-38 5z"/>
+  <circle cx="69" cy="69" r="5" fill="#39243d"/>
+  <circle cx="96" cy="69" r="5" fill="#39243d"/>
+  <path fill="none" stroke="#d85c82" stroke-linecap="round" stroke-width="4" d="M74 84c6 6 15 6 21 0"/>
+  <path fill="#ffd7c2" d="M49 111c-14 5-22 16-25 31l16 4c3-10 8-17 18-21zm64 14c10 4 16 11 19 21l16-4c-3-15-12-26-25-31z"/>
+  <path fill="url(#dress)" d="M52 112h61l18 56H34z"/>
+  <path fill="#fff4fb" d="M61 113l21 20 22-20z"/>
+  <path fill="#ff80b5" d="M45 166h74l-9 23H54z"/>
+  <rect x="58" y="184" width="17" height="12" rx="6" fill="#6d4adf"/>
+  <rect x="91" y="184" width="17" height="12" rx="6" fill="#6d4adf"/>
+  <path fill="#ffffff" d="M30 138l11-8 2 13 13 4-12 6 1 14-10-10-13 4 6-12-8-11z"/>
+</svg>
