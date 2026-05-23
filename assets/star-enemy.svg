@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="cute star enemy">
+  <path fill="#ffd15c" stroke="#c98918" stroke-width="5" stroke-linejoin="round" d="M60 9l14 32 35 3-27 23 8 35-30-18-30 18 8-35-27-23 35-3z"/>
+  <circle cx="47" cy="54" r="6" fill="#372338"/>
+  <circle cx="75" cy="54" r="6" fill="#372338"/>
+  <path fill="none" stroke="#9a5a22" stroke-linecap="round" stroke-width="5" d="M49 75c7-5 16-5 23 0"/>
+  <circle cx="35" cy="66" r="8" fill="#ff9fc1" opacity=".8"/>
+  <circle cx="86" cy="66" r="8" fill="#ff9fc1" opacity=".8"/>
+</svg>
