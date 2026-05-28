@@ -1,26 +1,27 @@
-# CodeX- Game Samples
+# Megaten Style Dungeon Prototype
 
-This repository currently contains two browser-based JavaScript game samples.
+90度回転・1マス移動の一人称ダンジョンRPG試作です。
 
-## Sweet Star Shooter
+## 内容
 
-A cute JavaScript shooting game where you guide a magical girl and stop incoming star monsters with heart bullets.
+- B1F / B2F のテストマップ
+- 入口、階段、宝箱、回復ポイント、ボス、街の仮配置
+- 前進、後退、左右90度回転
+- 壁判定とミニマップ
+- 調べる、ステータス、アイテム、装備、魔法、セーブの仮メニュー
+- 薬草入手、開封済み宝箱表示
+- ランダムエンカウント、ボス戦、逃走、勝利後の探索復帰
+- 街画面とショップ系メニューの仮表示
+- 3人パーティのHP/MP表示
 
-Open `index.html` to play it.
+## 操作
 
-## Mini RPG Maker Sample
+- `W` / `↑`: 前進
+- `S` / `↓`: 後退
+- `A` / `←`: 左90度回転
+- `D` / `→`: 右90度回転
+- `Space` / `Enter`: 調べる / 決定
+- `Z`: 決定
+- `X`: キャンセル / 街から戻る
 
-A small RPG Maker-style browser editor sample. It includes a tile map editor, simple NPC events, JSON export/import, and a grid-based first-person dungeon preview.
-
-Open `maker.html` to try it.
-
-## Files
-
-- `index.html`: Sweet Star Shooter game screen
-- `style.css`: Shooter styling
-- `script.js`: Shooter game logic
-- `assets/`: Shooter image assets
-- `maker.html`: RPG maker sample screen
-- `maker.css`: RPG maker sample styling
-- `maker.js`: RPG maker editor and preview logic
-- `data/sample-project.json`: Sample RPG project data
+`index.html` をブラウザで開くと動作します。
