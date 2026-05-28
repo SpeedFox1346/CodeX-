@@ -1,0 +1,474 @@
+:root {
+  color-scheme: dark;
+  --game-width: 1360px;
+  --game-height: 900px;
+  --scaled-game-width: 1360px;
+  --scaled-game-height: 900px;
+  --game-scale: 1;
+  --bg: #101114;
+  --panel: #1b1f24;
+  --panel-2: #232a30;
+  --line: #54606b;
+  --text: #f4f0e8;
+  --muted: #aeb8bd;
+  --accent: #d7b46a;
+  --danger: #c75f64;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+  overflow: auto;
+}
+
+.scale-stage {
+  position: relative;
+  width: var(--scaled-game-width);
+  height: var(--scaled-game-height);
+  margin: 0 auto;
+  padding-top: 16px;
+}
+
+button {
+  min-height: 44px;
+  border: 1px solid #697783;
+  border-radius: 6px;
+  background: #2a333a;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible,
+button.is-selected {
+  border-color: var(--accent);
+  outline: none;
+}
+
+button.is-selected {
+  background: #3a3324;
+  color: #fff5da;
+}
+
+.game-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 16px;
+  width: var(--game-width);
+  height: var(--game-height);
+  min-height: 0;
+  margin: 0;
+  padding: 16px;
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%) scale(var(--game-scale));
+  transform-origin: top center;
+}
+
+.viewport-wrap,
+.command-panel {
+  border: 1px solid #2f3a42;
+  background: var(--panel);
+}
+
+.viewport-wrap {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-height: 0;
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #090a0c;
+  image-rendering: auto;
+}
+
+.hud {
+  position: absolute;
+  inset: 12px 12px auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: none;
+}
+
+.hud > div,
+.message-box,
+.mini-map {
+  border: 1px solid rgba(228, 215, 183, 0.4);
+  background: rgba(18, 20, 22, 0.8);
+}
+
+.hud > div {
+  padding: 8px 10px;
+}
+
+.hud-label {
+  margin-right: 8px;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.hud-actions {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.hud-actions button {
+  width: 48px;
+  min-height: 40px;
+}
+
+.battle-party {
+  position: absolute;
+  inset: auto 18px 104px 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.party-card {
+  min-width: 0;
+  border: 1px solid rgba(228, 215, 183, 0.58);
+  background: rgba(15, 18, 20, 0.88);
+  padding: 10px;
+}
+
+.party-card.is-down {
+  opacity: 0.55;
+}
+
+.party-card.is-active {
+  border-width: 3px;
+  border-color: var(--accent);
+}
+
+.party-card strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: 15px;
+}
+
+.status-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.status-row b {
+  grid-column: 2;
+  justify-self: end;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.status-bar {
+  height: 10px;
+  border: 1px solid #53616b;
+  background: #14191d;
+}
+
+.status-bar i {
+  display: block;
+  height: 100%;
+  background: #8fb46d;
+}
+
+.status-bar.mp i {
+  background: #6e94c7;
+}
+
+.battle-command {
+  position: absolute;
+  inset: auto 18px 18px 18px;
+  display: none;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  z-index: 3;
+}
+
+.battle-command.is-visible {
+  display: grid;
+}
+
+.battle-command button {
+  min-width: 0;
+  min-height: 44px;
+  border-color: rgba(228, 215, 183, 0.58);
+  background: rgba(42, 51, 58, 0.94);
+  font-weight: 600;
+}
+
+.battle-command button.is-selected {
+  border-color: var(--accent);
+  background: #3a3324;
+  color: #fff5da;
+}
+
+.battle-select {
+  position: absolute;
+  inset: 96px 34px 250px 34px;
+  display: none;
+  border: 1px solid rgba(228, 215, 183, 0.68);
+  background: rgba(15, 18, 20, 0.94);
+  padding: 12px;
+  z-index: 4;
+}
+
+.battle-select.is-visible {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+}
+
+.battle-select-title {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.battle-select-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-content: start;
+  gap: 8px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.battle-select-options button {
+  min-width: 0;
+  min-height: 42px;
+  border-color: #596773;
+  background: #20292f;
+  font-weight: 600;
+}
+
+.battle-select-options button.is-selected {
+  border-color: var(--accent);
+  background: #3a3324;
+  color: #fff5da;
+}
+
+.battle-select-help {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.command-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 12px;
+  align-content: start;
+  min-height: 0;
+}
+
+.mini-map {
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+  align-content: start;
+}
+
+.map-cell {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid #1b2227;
+  background: #303940;
+}
+
+.map-cell.wall {
+  background: #0d1012;
+}
+
+.map-cell.event {
+  background: #71552c;
+}
+
+.map-cell.player {
+  background: var(--accent);
+}
+
+.message-box {
+  display: flex;
+  align-items: start;
+  min-height: 0;
+  padding: 14px;
+  overflow-y: auto;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.message-box p {
+  margin: 0;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.settings-overlay {
+  position: absolute;
+  inset: 16px;
+  display: none;
+  place-items: center;
+  z-index: 10;
+  background: rgba(6, 8, 10, 0.72);
+}
+
+.settings-overlay.is-visible {
+  display: grid;
+}
+
+.settings-window {
+  width: 640px;
+  border: 1px solid rgba(228, 215, 183, 0.68);
+  background: rgba(15, 18, 20, 0.96);
+  padding: 18px;
+}
+
+.settings-title {
+  margin-bottom: 14px;
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.settings-list {
+  display: grid;
+  gap: 10px;
+}
+
+.settings-row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) 52px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #596773;
+  border-radius: 6px;
+  background: #20292f;
+  color: var(--text);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+button.settings-row {
+  grid-template-columns: 150px minmax(0, 1fr);
+}
+
+.settings-row.is-selected {
+  border-color: var(--accent);
+  background: #3a3324;
+}
+
+.settings-row strong {
+  justify-self: end;
+}
+
+.settings-row input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.settings-help {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.menu-overlay {
+  position: absolute;
+  inset: 16px;
+  display: none;
+  place-items: center;
+  z-index: 9;
+  background: rgba(6, 8, 10, 0.66);
+}
+
+.menu-overlay.is-visible {
+  display: grid;
+}
+
+.menu-window {
+  width: 720px;
+  max-height: 760px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: 12px;
+  border: 1px solid rgba(228, 215, 183, 0.68);
+  background: rgba(15, 18, 20, 0.96);
+  padding: 18px;
+}
+
+.menu-title {
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.menu-detail {
+  min-height: 120px;
+  overflow-y: auto;
+  border: 1px solid rgba(228, 215, 183, 0.28);
+  background: rgba(10, 12, 14, 0.78);
+  padding: 14px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.menu-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.menu-options button {
+  min-width: 0;
+  border-color: #596773;
+  background: #20292f;
+  font-weight: 600;
+}
+
+.menu-options button.is-selected {
+  border-color: var(--accent);
+  background: #3a3324;
+  color: #fff5da;
+}
+
+.menu-help {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+}
