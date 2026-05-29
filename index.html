@@ -91,6 +91,7 @@
             <button id="fieldMagicMenu" type="button">魔法</button>
             <button id="inspect" type="button">調べる</button>
             <button id="settingsMenu" type="button">設定</button>
+            <button id="returnTitleMenu" type="button">タイトル</button>
           </div>
         </section>
         <section class="settings-overlay" id="settingsOverlay" aria-label="Settings">
@@ -116,6 +117,11 @@
                 <input id="seVolume" type="range" min="0" max="100" value="50" />
                 <strong id="seVolumeValue">50</strong>
               </label>
+              <label class="settings-row">
+                <span>バトルスピード</span>
+                <input id="battleSpeed" type="range" min="1" max="8" value="4" />
+                <strong id="battleSpeedValue">4</strong>
+              </label>
             </div>
             <div class="settings-help">Z 決定 / X キャンセル / ↑↓ 選択 / ←→ 調整</div>
           </div>
@@ -128,18 +134,21 @@
             <div class="menu-help">Z 決定 / X キャンセル / ↑↓←→ 選択</div>
           </div>
         </section>
+        <section class="title-overlay" id="titleOverlay" aria-label="Title">
+          <div class="title-window">
+            <div class="title-kicker">TEST BUILD</div>
+            <h1>Dungeon RPG Prototype</h1>
+            <div class="title-menu">
+              <button id="titleStart" type="button">スタート</button>
+              <button id="titleLoad" type="button">ロード</button>
+              <button id="titleSettings" type="button">設定</button>
+            </div>
+            <div class="title-help">Z 決定 / ↑↓ 選択</div>
+          </div>
+        </section>
       </main>
     </div>
 
-    <script src="main-01.js"></script>
-    <script src="main-02.js"></script>
-    <script src="main-03.js"></script>
-    <script src="main-04.js"></script>
-    <script src="main-05.js"></script>
-    <script src="main-06.js"></script>
-    <script src="main-07.js"></script>
-    <script src="main-08.js"></script>
-    <script src="main-09.js"></script>
-    <script src="main-10.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>

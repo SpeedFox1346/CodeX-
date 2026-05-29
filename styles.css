@@ -472,3 +472,63 @@ button.settings-row {
   font-size: 12px;
   text-align: right;
 }
+
+.title-overlay {
+  position: absolute;
+  inset: 16px;
+  display: grid;
+  place-items: center;
+  z-index: 12;
+  background:
+    linear-gradient(rgba(8, 10, 12, 0.55), rgba(8, 10, 12, 0.88)),
+    radial-gradient(circle at 50% 38%, rgba(215, 180, 106, 0.12), transparent 36%),
+    #101114;
+}
+
+.title-overlay.is-hidden {
+  display: none;
+}
+
+.title-window {
+  width: 520px;
+  display: grid;
+  gap: 18px;
+  text-align: center;
+}
+
+.title-kicker {
+  color: var(--accent);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.title-window h1 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.title-menu {
+  display: grid;
+  gap: 10px;
+}
+
+.title-menu button {
+  min-height: 52px;
+  border-color: rgba(228, 215, 183, 0.58);
+  background: rgba(32, 41, 47, 0.94);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.title-menu button.is-selected {
+  border-color: var(--accent);
+  background: #3a3324;
+  color: #fff5da;
+}
+
+.title-help {
+  color: var(--muted);
+  font-size: 12px;
+}
